@@ -22,27 +22,36 @@ jobs:
       contents: read
 
     steps:
-      - name: Checkout
+      - name: Checkout PR repo
         uses: actions/checkout@v4
+
+      - name: Checkout claude-token-proxy
+        uses: actions/checkout@v4
+        with:
+          repository: dell-4xz8ls3/claude-token-proxy
+          path: _claude-token-proxy
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Setup claude-token-proxy
+      - name: Install claude-token-proxy deps
+        run: cd _claude-token-proxy && bun install
+
+      - name: Checkout pr-audit
+        uses: actions/checkout@v4
+        with:
+          repository: dell-4xz8ls3/pr-audit
+          path: _pr-audit
+
+      - name: Install and build pr-audit
         run: |
-          git clone https://github.com/dell-4xz8ls3/claude-token-proxy.git /tmp/claude-token-proxy
-          cd /tmp/claude-token-proxy && bun install
+          cd _pr-audit && bun install
+          bun install -g _pr-audit
 
       - name: Install Claude CLI
         run: bun install -g @anthropic-ai/claude-code
-
-      - name: Install pr-audit
-        run: |
-          git clone https://github.com/dell-4xz8ls3/pr-audit.git /tmp/pr-audit
-          cd /tmp/pr-audit && bun install
-          bun install -g /tmp/pr-audit
 
       - name: Run PR Review
         env:
@@ -51,4 +60,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pr-audit "${{ github.event.pull_request.html_url }}" \
-            --auth-token "bun /tmp/claude-token-proxy/src/index.ts decrypt-token"
+            --auth-token "bun ${{ github.workspace }}/_claude-token-proxy/src/index.ts decrypt-token"
