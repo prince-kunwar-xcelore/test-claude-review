@@ -42,7 +42,7 @@ jobs:
       - name: Checkout pr-audit
         uses: actions/checkout@v4
         with:
-          repository: prince-kunwar-xcelore/pr-audit
+          repository: prince-kunwar-xcelore/claude-audit-tool
           path: _pr-audit
 
       - name: Install and build pr-audit
