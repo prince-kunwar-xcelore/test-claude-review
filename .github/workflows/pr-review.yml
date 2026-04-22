@@ -28,7 +28,7 @@ jobs:
       - name: Checkout claude-token-proxy
         uses: actions/checkout@v4
         with:
-          repository: dell-4xz8ls3/claude-token-proxy
+          repository: prince-kunwar-xcelore/claude-token-proxy
           path: _claude-token-proxy
 
       - name: Setup Bun
@@ -42,7 +42,7 @@ jobs:
       - name: Checkout pr-audit
         uses: actions/checkout@v4
         with:
-          repository: dell-4xz8ls3/pr-audit
+          repository: prince-kunwar-xcelore/pr-audit
           path: _pr-audit
 
       - name: Install and build pr-audit
