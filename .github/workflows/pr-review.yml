@@ -58,4 +58,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bun ${{ github.workspace }}/_claude-audit-tool/src/index.ts "${{ github.event.pull_request.html_url }}" \
-            --auth-token "bun ${{ github.workspace }}/_claude-token-proxy/src/index.ts decrypt-token"
+            --auth-token "$(bun ${{ github.workspace }}/_claude-token-proxy/src/index.ts decrypt-token)"
